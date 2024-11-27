@@ -1,3 +1,32 @@
+<?php
+    include "db.php";
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $cliente_id = $_POST['cliente_id'];
+        $sabor_pizza = $_POST['sabor_pizza'];
+        $quantidade = $_POST['quantidade_pizza'];
+        $observacao = $_POST['observacao'];
+
+        $sql = "INSERT INTO pedidos(cliente_id, sabor_pizza, quantidade_pizza, observacao) VALUES (:cliente_id, :sabor_pizza, :quantidade_pizza, :observacao)";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam("cliente_id", $cliente_id);
+        $stmt->bindParam("sabor_pizza", $sabor_pizza);
+        $stmt->bindParam("quantidade", $quantidade);
+        $stmt->bindParam("observacao", $observacao);
+
+        $stmt->execute();
+
+        header("location:pedidos.php");
+        exit;
+    }
+
+    $sql = "SELECT * FROM clientes";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $clientes = $stmt->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -5,34 +34,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar pedido - Pizzaria</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <?php
-        include "db.php";
-
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $cliente_id = $_POST['cliente_id'];
-            $sabor_pizza = $_POST['sabor_pizza'];
-            $quantidade = $_POST['quantidade_pizza'];
-            $observacao = $_POST['observacao'];
-
-            $sql = "INSERT INTO pedidos(cliente_id, sabor_pizza, quantidade_pizza, observacao) VALUES (:cliente_id, :sabor_pizza, :quantidade_pizza, :observacao)";
-
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam("cliente_id", $cliente_id);
-            $stmt->bindParam("sabor_pizza", $sabor_pizza);
-            $stmt->bindParam("quantidade", $quantidade);
-            $stmt->bindParam("observacao", $observacao);
-
-            $stmt->execute();
-
-            header("location:pedidos.php");
-            exit;
-        }
-
-        $sql = "SELECT * FROM clientes";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $clientes = $stmt->fetchAll();
-    ?>
     <script>
         function preencheDadosCliente() {
             let clienteId = document.getElementById("cliente_id");
@@ -60,11 +61,13 @@
             <li class="nav-item">
                 <a href="cadastro.php" class="nav-link">Cadastrar cliente</a>
             </li>
+            <li class="nav-item">
+                <a href="cadastro_pizza.php" class="nav-link">Cadastrar pizza</a>
+            </li>
         </div>
     </nav>
     <div class="container">
         <h1 class="h1">Registrar Pedido</h1>
-
         <form action="index.php" method="post" class="form">
             <div class="mb-3">
                 <label for="cliente_id" class="form-label">Selecione o cliente:</label>
