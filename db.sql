@@ -10,7 +10,7 @@ CREATE TABLE clientes(
 );
 
 CREATE TABLE pedidos(
-    id INT(11) PRIMARY KEY,
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
     cliente_id INT(11) NOT NULL,
     sabor_pizza VARCHAR(100) NOT NULL, -- redundancia
     quantidade_pizza INT(11) NOT NULL,

@@ -7,7 +7,7 @@
         $quantidade = $_POST['quantidade_pizza'];
         $observacao = $_POST['observacao'];
 
-        $sql = "INSERT INTO pedidos(cliente_id, sabor_pizza, quantidade_pizza, observacao) VALUES (:cliente_id, :sabor_pizza, :quantidade_pizza, :observacao)";
+        $sql = "INSERT INTO pedidos(cliente_id, sabor_pizza, quantidade_pizza, observacao) VALUES (:cliente_id, :sabor_pizza, :quantidade, :observacao)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam("cliente_id", $cliente_id);
@@ -50,8 +50,8 @@
     </script>
 </head>
 <body>
-    <nav class="navbar bg-light navbar-light">
-        <div class="navbar-nav">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-center">
+        <ul class="navbar-nav">
             <li class="nav-item">
                 <a href="index.php" class="nav-link active">Registrar pedido</a>
             </li>
@@ -64,17 +64,17 @@
             <li class="nav-item">
                 <a href="cadastro_pizza.php" class="nav-link">Cadastrar pizza</a>
             </li>
-        </div>
+        </ul>
     </nav>
-    <div class="container">
+    <div class="container mt-5">
         <h1 class="h1">Registrar Pedido</h1>
-        <form action="index.php" method="post" class="form">
+        <form action="index.php" method="post" class="was-validated">
             <div class="mb-3">
                 <label for="cliente_id" class="form-label">Selecione o cliente:</label>
                 <select name="cliente_id" id="cliente_id" onchange="preencherDadosCliente()" required class="form-select">
                     <option value="">Escolha o Cliente</option>
                     <?php foreach($clientes as $cliente): ?>
-                        <option value="<?php echo $cliente['id']; ?>"><?php echo $cliente['nome_cliente']; ?></option>
+                        <option value="<?php echo $cliente['id']; ?>"><?php echo $cliente['nome']; ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
@@ -92,7 +92,7 @@
             </div>
             <div class="mb-3">
                 <label for="quantidade_pizza" class="form-label">Quantidade:</label>
-                <input type="number" name="quantidade_pizza" id="quantidade_pizza" min="0" required class="form-control">
+                <input type="number" name="quantidade_pizza" id="quantidade_pizza" min="1" value="1" required class="form-control">
             </div>
             <div class="mb-3">
                 <label for="observacao" class="form-label">Observação:</label>

@@ -25,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-    <nav class="navbar bg-light navbar-light">
-        <div class="navbar-nav">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-center">
+        <ul class="navbar-nav">
             <li class="nav-item">
                 <a href="index.php" class="nav-link">Registrar pedido</a>
             </li>
@@ -39,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <li class="nav-item">
                 <a href="cadastro_pizza.php" class="nav-link active">Cadastrar pizza</a>
             </li>
-        </div>
+        </ul>
     </nav>
-    <div class="container">
+    <div class="container mt-5">
         <h1 class="h1">Registrar Pizza</h1>
         <form action="cadastro_pizza.php" method="post" class="was-validated">
             <div class="mb-3 mt-3">
