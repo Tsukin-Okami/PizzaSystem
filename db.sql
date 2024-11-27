@@ -22,5 +22,5 @@ CREATE TABLE pedidos(
 
 CREATE TABLE pizzas(
     id INT(11) PRIMARY KEY,
-    sabor_pizza VARCHAR(255) NOT NULL,
+    sabor_pizza VARCHAR(255) NOT NULL
 );
