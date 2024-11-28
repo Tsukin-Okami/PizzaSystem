@@ -1,6 +1,7 @@
 <?php
 
 include "db.php";
+include "taghtml.php";
 
 if (isset($_GET['excluir'])) {
     $id = $_GET['excluir'];
@@ -70,42 +71,63 @@ $pedidos = $stmt->fetchAll();
         <div class="container">
             <div class="container">
                 <h2>Pedidos a Fazer</h2>
-                <?php foreach($pedidos as $pedido): ?>
-                    <?php if($pedido['status'] == "A fazer"): ?>
-                        <div class="pedido">
-                            <p>
-                                <strong>Cliente:</strong>
-                                <?php echo $pedido['nome_cliente']; ?>
-                            </p>
-                            <p>
-                                <strong>Telefone:</strong>
-                                <?php echo $pedido['telefone_cliente']; ?>
-                            </p>
-                            <p>
-                                <strong>Endereço:</strong>
-                                <?php echo $pedido['endereco_cliente']; ?>
-                            </p>
-                            <p>
-                                <strong>Sabor da Pizza:</strong>
-                                <?php echo $pedido['sabor_pizza']; ?>
-                            </p>
-                            <p>
-                                <strong>Quantidade:</strong>
-                                <?php echo $pedido['quantidade_pizza']; ?>
-                            </p>
-                            <p>
-                                <strong>Observação:</strong>
-                                <?php echo $pedido['observacao']; ?>
-                            </p>
-                            <p>
-                                <strong>Status:</strong>
-                                <?php echo $pedido['status']; ?>
-                            </p>
-                            <a href="?atualizar_status=<?php echo $pedido['id'] ?>">Alterar status</a>
-                            <a href="?excluir=<?php echo $pedido['id'] ?>">Excluir pedido</a>
-                        </div>    
-                    <?php endif; ?>    
-                <?php endforeach; ?>
+                <?php 
+                    foreach($pedidos as $pedido) {
+                        if ($pedido['status'] == "A fazer") {
+                            $pedidosvalue = [
+                                $pedido['nome_cliente'],
+                                $pedido['telefone_cliente'],
+                                $pedido['endereco_cliente'],
+                                $pedido['sabor_pizza'],
+                                $pedido['quantidade_pizza'],
+                                $pedido['observacao'],
+                                $pedido['status']
+                            ];
+
+                            $pedidosnome = [
+                                "Cliente:",
+                                "Telefone:",
+                                "Endereço:",
+                                "Sabor da Pizza:",
+                                "Quantidade:",
+                                "Observação:",
+                                "Status:"
+                            ];
+
+                            $detalhes = "";
+
+                            foreach ($pedidosvalue as $key => $pvalue) {
+                                $title = new tagHtml;
+                                $title->setTag("strong");
+                                $title->setValue($pedidosnome[$key]);
+
+                                $joint = $title->mount() . $pvalue;
+
+                                $paragraf = new tagHtml;
+                                $paragraf->setTag("p");
+                                $paragraf->setValue($joint);
+                                $detalhes .= $paragraf->mount();
+                            }
+
+                            $atualizar = new tagHtml;
+                            $atualizar->setTag("a");
+                            $atualizar->setValue("Alterar status");
+                            $atualizar->addAtribute("href","?atualizar_status={$pedido['id']}");
+                            $detalhes .= $atualizar->mount();
+
+                            $excluir = new tagHtml;
+                            $excluir->setTag("a");
+                            $excluir->setValue("Excluir pedido");
+                            $excluir->addAtribute("href","?excluir={$pedido['id']}");
+                            $detalhes .= $excluir->mount();
+
+                            $conjunto = new tagHtml;
+                            $conjunto->setTag("div");
+                            $conjunto->addAtribute("class","pedido");
+                            $conjunto->setValue($detalhes);
+                        }
+                    }
+                ?>
             </div>
             <div class="container">
                 <h2>Pedidos Prontos</h2>

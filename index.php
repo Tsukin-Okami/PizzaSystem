@@ -1,5 +1,6 @@
 <?php
     include "db.php";
+    include "taghtml.php";
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $cliente_id = $_POST['cliente_id'];
@@ -73,9 +74,13 @@
                 <label for="cliente_id" class="form-label">Selecione o cliente:</label>
                 <select name="cliente_id" id="cliente_id" onchange="preencherDadosCliente()" required class="form-select">
                     <option value="">Escolha o Cliente</option>
-                    <?php foreach($clientes as $cliente): ?>
-                        <option value="<?php echo $cliente['id']; ?>"><?php echo $cliente['nome']; ?></option>
-                    <?php endforeach ?>
+                    <?php foreach($clientes as $cliente) {
+                        $option = new tagHtml;
+                        $option->setTag("option");
+                        $option->setValue($cliente['nome']);
+                        $option->addAtribute("value",$cliente['id']);
+                        echo $option->mount();
+                    } ?>
                 </select>
             </div>
             <div class="mb-3">
